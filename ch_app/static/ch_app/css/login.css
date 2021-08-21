@@ -1,0 +1,132 @@
+:root {
+ --theme-color: #00fff2;
+ --background-color-base: rgb(10, 167, 244);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
+* {
+ margin: 0;
+ padding: 0;
+ border: none;
+ text-decoration: none;
+ box-sizing: border-box;
+ font-family: 'Roboto', sans-serif;
+}
+
+html,
+body {
+ height: 100%;
+ /*100vh*/
+}
+
+body {
+ display: flex;
+ flex-direction: column;
+}
+
+nav.login {
+ width: 100%;
+ height: 3em;
+ background-color: var(--background-color-base);
+ text-transform: uppercase;
+ display: flex;
+ align-items: center;
+ padding-left: 10px;
+ font-weight: bold;
+ color: #ffffff;
+}
+
+section.login {
+ display: flex;
+ flex-direction: column;
+ width: 100%;
+ height: 100%;
+ background-color: var(--background-color-base);
+}
+
+section.login span.logo {
+ display: flex;
+ background-image: url("../assets/logo.svg");
+ background-position: center;
+ background-size: contain;
+ background-repeat: no-repeat;
+ width: 10em;
+ height: 10em;
+ margin: 2em auto;
+}
+
+section.login form.login div.input {
+ width: 100%;
+ margin: 2em 0;
+ padding: 0 2em;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
+section.login form.login div.input span {
+ width: 34px;
+ height: 34px;
+ display: inline-block;
+ background-position: center;
+ background-size: cover;
+ background-repeat: no-repeat;
+ margin-top: 1px;
+}
+
+section.login form.login div.input span#user-icon {
+ background-image: url("../assets/user-icon.svg");
+}
+
+section.login form.login div.input span#pass-icon {
+ background-image: url("../assets/pass-icon.svg");
+}
+
+section.login form.login div.input input {
+ font-size: 16px;
+ padding: 8px 16px;
+ width: 80%;
+ border-bottom: 1px solid #ffffff;
+ text-transform: uppercase;
+ background: none;
+ color: #ffffff;
+}
+
+section.login form.login .button {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ cursor: pointer;
+ width: 15em;
+ height: 4em;
+ padding: 8px 16px;
+ text-transform: uppercase;
+ color: black;
+ font-weight: bold;
+ background-color: white;
+ margin: 0 auto;
+ border: 1px solid white;
+ transition: 300ms;
+}
+
+section.login form.login .button:hover {
+ background: none;
+ border: 1px solid white;
+ color: #ffffff;
+ transition: 300ms;
+}
+
+footer {
+ display: flex;
+ width: 100%;
+ height: auto;
+ margin-top: auto;
+ text-align: center;
+ align-items: center;
+ justify-content: center;
+ font-size: 12px;
+ color: #ffffff;
+ font-weight: bold;
+ padding: 5px 0;
+ background-color: var(--background-color-base);
+}

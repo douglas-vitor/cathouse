@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+        <title>Câmera | Cat House 4.1</title>
+{% endblock %}
+
+{% block content %}
+
+        {% if cameras == 0 or not cameras %}
+                <h5>Nenhuma câmera cadastrada.</h5>
+        {% else %}
+                <div class="sub-container-2columns">
+
+                        <!-- conteudo das cams aqui -->
+
+                </div>
+        {% endif %}
+
+{% endblock %}

@@ -1,0 +1,43 @@
+/*dimmer*/
+
+.dimmer-item {
+    width: 100%;
+    height: 8em;
+    padding: 1em;
+}
+
+.dimmer-item>h4 {
+    color: #ffffff;
+    margin-bottom: 1em;
+}
+
+.dimmer-item .dimmer-form {
+    display: grid;
+    grid-template-columns: 1fr 80px;
+}
+
+.dimmer-item .dimmer-form form {
+    display: flex;
+}
+
+.dimmer-item .dimmer-form input[type="range"] {
+    width: 100%;
+}
+
+.dimmer-item .dimmer-form input[type="submit"] {
+    width: 60px;
+    margin-left: 10px;
+    padding: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #ffffff;
+    border: 1px solid rgb(10, 167, 244);
+    background-color: #87CEFA;
+    text-transform: uppercase;
+}
+
+.dimmer-item .dimmer-form input[type="submit"]:hover {
+    background-color: rgb(10, 167, 244);
+    border: 1px solid #ffffff;
+    transition: 0.5s;
+}

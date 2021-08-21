@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#0aa7f4">
+        <link rel="shortcut icon" href="{% static 'ch_app/assets/logo.svg' %}" type="image/png">
+        <link rel="stylesheet" href="{% static 'ch_app/css/login.css' %}">
+        <link rel="stylesheet" href="{% static 'ch_app/css/mobile.css' %}">
+        <title>Cat House 4.1</title>
+    </head>
+    <body>
+        <nav class="login">
+        cathouse
+    </nav>
+        <section class="login">
+            <span class="logo"></span>
+            <form action="{% url 'login' %}" class="login" method="POST">
+                {% csrf_token %}
+                <div class="input">
+                    <span class="user" id="user-icon"></span>
+                    <input type="text" id="id_username" name="username" placeholder="USUÁRIO">
+                </div>
+
+                <div class="input">
+                    <span class="pass" id="pass-icon"></span>
+                    <input type="password" id="id_password" name="password" placeholder="Senha">
+                </div>
+
+                <button type="submit" class="button">Entrar</button>
+                <input type="hidden" name="next" value="{{ next }}"/>
+            </form>
+
+            <footer>
+    Cat Security<br>
+    2021 - 2022
+</footer>
+        </section>
+    </body>
+</html>

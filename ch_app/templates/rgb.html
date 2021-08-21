@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}{% endblock %}
+
+{% block title %}
+    <title>RGB | Cat House 4.1</title>
+{% endblock %}
+
+{% block content %}
+
+    {% if rgbs == 0 or not rgbs %}
+        <h5>Nenhum terminal RGB cadastrado.</h5>
+    {% else %}
+        <div class="sub-container-2columns"></div>
+    {% endif %}
+
+{% endblock %}

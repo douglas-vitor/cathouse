@@ -1,0 +1,216 @@
+/*agendamento*/
+
+body {
+    overflow-x: hidden;
+}
+
+section.content .container-funcs {
+    background-color: rgb(10, 167, 244);
+    height: 100%;
+}
+
+.container .sub-container-1column section.content .container-funcs span.title {
+    display: block;
+    width: 100%;
+    font-size: 1.75em;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #87CEFA;
+    color: #ffffff;
+}
+
+.container .sub-container-1column .form-clock {
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid #87CEFA;
+    padding-bottom: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.container .sub-container-1column .parts1 {
+    width: 100%;
+    height: 8em;
+    display: grid;
+    grid-template-columns: 15em 7em;
+}
+
+.container .sub-container-1column .parts1 .clock {
+    width: 100%;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    padding: 1em 0;
+}
+
+.container .sub-container-1column .parts1 .clock input[name="clock"] {
+    width: 6em;
+    font-size: 2em;
+    font-weight: bold;
+    outline: none;
+    appearance: none;
+    border: 1px solid #87CEFA;
+    border-radius: 4px;
+}
+
+.container .sub-container-1column .parts1 .buttons span {
+    font-size: 0.75em;
+}
+
+.container .sub-container-1column .days {
+    width: 100%;
+    height: 3em;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    padding: 1em 0;
+    margin-bottom: 0.5em;
+}
+
+.container .sub-container-1column .form-clock .days .um span,
+.container .sub-container-1column .form-clock .days .dois span {
+    display: inline-flex;
+    width: 3em;
+    height: 2em;
+    font-size: 0.75em;
+    border: 1px solid #87CEFA;
+    align-items: center;
+    justify-content: center;
+}
+
+.container .sub-container-1column .clock-action {
+    width: 100%;
+    height: 4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container .sub-container-1column .clock-action span {
+    font-size: 0.75em;
+}
+
+.container .sub-container-1column .clock-action select {
+    width: 10em;
+    height: 2em;
+    border: 1px solid #87CEFA;
+    border-radius: 4px;
+    margin-left: 1em;
+    outline: none;
+    appearance: none;
+}
+
+.container .sub-container-1column .clock-action select option {
+    font-weight: bold;
+}
+
+.container .sub-container-1column .save {
+    width: 100%;
+    height: 4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1em 0;
+}
+
+.container .sub-container-1column .save input[type="submit"] {
+    font-size: 1.25em;
+    background-color: #87CEFA;
+    color: #ffffff;
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.container .sub-container-1column .content .container-funcs .alarms .alarm {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: 4em 1fr;
+    border-top: 1px solid #87CEFA;
+    border-bottom: 1px solid #87CEFA;
+    margin: 0.5em 0;
+}
+
+.container .sub-container-1column .alarms .alarm .dell {
+    max-width: 3em;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    background-color: #87CEFA;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.container .sub-container-1column .alarms .alarm .dell:hover {
+    background-color: red;
+}
+
+.container .sub-container-1column .alarm .info .buttons {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0.5em;
+}
+
+.container .sub-container-1column .alarm .info .buttons .um {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+}
+
+.container .sub-container-1column .alarm .info .buttons .um span {
+    font-size: 0.75em;
+}
+
+.container .sub-container-1column .alarm .info .buttons .contain-button {
+    width: 7em;
+    margin-left: 0.5em;
+    max-height: 2.5em;
+}
+
+.container .sub-container-1column .alarm .info .buttons .dois {
+    display: flex;
+}
+
+.container .sub-container-1column .alarm .info .thing-action {
+    font-size: 1em;
+    color: #ffffff;
+    margin-left: 10px;
+    padding: 0.5em 0;
+}
+
+.container .sub-container-1column .alarm .info .clock {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.container .sub-container-1column .alarm .info .update {
+    width: 100%;
+    max-height: 3em;
+    margin-top: 0.5em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container .sub-container-1column .alarm .info .update button {
+    width: 90%;
+    height: 3em;
+    border-radius: 4px;
+    background-color: #87CEFA;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+/* end agendamento */

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'ch_app/css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'ch_app/css/agendamento.css' %}">
+{% endblock %}
+
+{% block title %}
+    <title>Agendamento | Cat House 4.1</title>
+{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <div class="sub-container-1column">
+
+            <section class="content">
+                <div class="container-funcs">
+                    <span class="title">Agendamentos</span>
+
+                    <div class="form-clock">
+                        <form action="/agendamento" name="new-alarm" method="POST">
+                            {% csrf_token %}
+
+                            <div class="parts1">
+                                <div class="clock">
+                                    <input type="time" name="clock" id="clock">
+                                </div>
+                                <div class="buttons">
+                                    <span>Ativar :</span>
+                                    <div class="contain-button" id="ativar1" onclick="switchButtonClock.on('ativar1')">
+                                        <div class="ball"></div>
+                                        <input type="hidden" name="hidden_ativar1" id="hidden_ativar1" value="no">
+                                    </div>
+
+                                    <span>Repetir :</span>
+                                    <div class="contain-button" id="repetir1" onclick="switchButtonClock.on('repetir1')">
+                                        <div class="ball"></div>
+                                        <input type="hidden" name="hidden_repetir1" id="hidden_repetir1" value="no">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="days">
+                                <div class="um">
+                                    <span>DOM</span>
+                                    <span>SEG</span>
+                                    <span>TER</span>
+                                    <span>QUA</span>
+                                    <span>QUI</span>
+                                    <span>SEX</span>
+                                    <span>SAB</span>
+                                </div>
+                                <div class="dois">
+                                    <span><input type="checkbox" value="S" name="dom" id="dom"></span>
+                                    <span><input type="checkbox" value="M" name="seg" id="seg"></span>
+                                    <span><input type="checkbox" value="T" name="ter" id="ter"></span>
+                                    <span><input type="checkbox" value="W" name="qua" id="qua"></span>
+                                    <span><input type="checkbox" value="T" name="qui" id="qui"></span>
+                                    <span><input type="checkbox" value="F" name="sex" id="sex"></span>
+                                    <span><input type="checkbox" value="S" name="sab" id="sab"></span>
+                                </div>
+                            </div>
+
+                            <div class="clock-action">
+                                <span>Ação :
+</span>
+                                <select name="action" id="action">
+                                    <option value=""></option>
+                                    <option value="on">Ligar</option>
+                                    <option value="off">Desligar</option>
+                                </select>
+
+                                <select name="thing" id="thing">
+                                    <option value=""></option>
+                                    {% for thing in things %}
+                                        <option value="{{thing.ip}}">{{thing.type}}
+                                            {{thing.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="save">
+                                <input type="submit" value="Salvar">
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="alarms">
+                        {% for alarm in alarms %}
+                            <form name="dellAlarm{{alarm.id}}" action="/deletealarm/{{alarm.id}}" method="POST">
+                                {% csrf_token %}
+
+                                <input type="hidden" value="{{alarm.ip}}" name="ip">
+                                <input type="hidden" value="{{alarm.id}}" name="id">
+                                <input type="hidden" value="{{alarm.name}}" name="timer">
+                                <input type="hidden" value="{{alarm.time}}" name="time">
+                            </form>
+
+                            <form name="updateAlarm{{alarm.id}}" action="/updatealarm/{{alarm.id}}" method="POST">
+                                {% csrf_token %}
+
+                                <input type="hidden" name="timer" value="{{alarm.name}}">
+                                <input type="hidden" name="ip" value="{{alarm.ip}}">
+                                <div class="alarm">
+                                    <div class="dell" onclick="document.forms['dellAlarm{{alarm.id}}'].submit()">X</div>
+                                    <div class="info">
+                                        <div class="buttons">
+                                            <div class="um">
+                                                <span>Ativar :</span>
+                                                <span>Repetir :</span>
+                                            </div>
+
+                                            <div class="dois">
+                                                {% if alarm.arm == 0 %}
+                                                    <div class="contain-button" id="alarm_ativar{{alarm.id}}" onclick="switchButtonClock.on('alarm_ativar{{alarm.id}}')">
+                                                        <div class="ball"></div>
+                                                        <input type="hidden" name="hidden_alarm_ativar" id="hidden_alarm_ativar{{alarm.id}}" value="no">
+                                                    </div>
+                                                {% elif alarm.arm == 1 %}
+                                                    <div class="contain-button powerOn" id="alarm_ativar{{alarm.id}}" onclick="switchButtonClock.off('alarm_ativar{{alarm.id}}')" style="justify-content: flex-end;">
+                                                        <div class="ball"></div>
+                                                        <input type="hidden" name="hidden_alarm_ativar" id="hidden_alarm_ativar{{alarm.id}}" value="yes">
+                                                    </div>
+                                                {% endif %}
+
+                                                {% if alarm.repeat_timer == 0 %}
+                                                    <div class="contain-button" id="alarm_repetir{{alarm.id}}" onclick="switchButtonClock.on('alarm_repetir{{alarm.id}}')">
+                                                        <div class="ball"></div>
+                                                        <input type="hidden" name="hidden_alarm_repetir" id="hidden_alarm_repetir{{alarm.id}}" value="no">
+                                                    </div>
+                                                {% elif alarm.repeat_timer == 1 %}
+                                                    <div class="contain-button powerOn" id="alarm_repetir{{alarm.id}}" onclick="switchButtonClock.off('alarm_repetir{{alarm.id}}')" style="justify-content: flex-end;">
+                                                        <div class="ball"></div>
+                                                        <input type="hidden" name="hidden_alarm_repetir" id="hidden_alarm_repetir{{alarm.id}}" value="yes">
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+
+                                        </div>
+                                        <div class="thing-action">{{alarm.name_for_user}}</div>
+                                        <div class="clock">{{alarm.time}}</div>
+                                        <div class="days">{{alarm.days}}</div>
+                                        <div class="update">
+                                            <button type="submit">Atualizar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+    {% endif %}
+
+{% endblock %}

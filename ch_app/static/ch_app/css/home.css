@@ -1,0 +1,130 @@
+/*luz*/
+
+.container .luz,
+.container .travas,
+.container .sub-container-2columns {
+ margin-top: 1em;
+ overflow-y: auto;
+ overflow-x: hidden;
+ height: 15em;
+}
+
+.container .luz>h5,
+.container .travas>h5 {
+ color: #ffffff;
+ text-align: center;
+ margin-bottom: 1em;
+}
+
+.container .luz .item,
+.container .travas .item,
+.container .sub-container-2columns .item {
+ display: grid;
+ grid-template-columns: 1fr 7em;
+ align-items: center;
+ margin: 10px 0;
+ border-bottom: 1px solid #87CEFA;
+}
+
+.item .info {
+ padding: 5px 10px;
+}
+
+.item .info h1 {
+ font-size: 1.5em;
+}
+
+.item .info h5 {
+ font-size: 0.75em;
+ font-weight: normal;
+ color: #ffffff;
+ margin-left: 1em;
+}
+
+.item .contain-button,
+.form-clock .parts1 .buttons .contain-button,
+.alarms .alarm .info .buttons .dois .contain-button,
+.container .sub-container-2columns .item .contain-button {
+ display: flex;
+ background-color: gray;
+ height: 2.5em;
+ border-radius: 2.5em;
+ margin-right: 10px;
+ border: 2px solid #ffffff;
+ padding: 2px;
+ align-items: center;
+ justify-content: start;
+ position: relative;
+ transition: 200ms;
+}
+
+.item .contain-button .ball,
+.form-clock .parts1 .buttons .contain-button .ball,
+.alarms .alarm .info .buttons .dois .contain-button .ball,
+.container .sub-container-2columns .item .contain-button .ball {
+ background-color: white;
+ width: 2em;
+ height: 2em;
+ border-radius: 50%;
+ transition: 200ms;
+ position: absolute;
+ cursor: pointer;
+}
+
+.item .powerOn,
+.form-clock .parts1 .buttons .powerOn,
+.alarms .alarm .info .buttons .dois .powerOn,
+.container .sub-container-2columns .item .powerOn {
+ background-color: #87CEFA;
+ border: 1px solid #ffffff;
+ transition: 200ms;
+}
+
+
+/*luz end*/
+
+
+/*travas*/
+
+.container .travas {
+ height: 15em;
+}
+
+.container div .travas .item .contain-padlock {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ width: 4em;
+ height: 4em;
+ border: 3px solid var(--theme-color);
+ border-radius: 50%;
+ margin-bottom: 5px;
+ padding: 0.5em;
+ cursor: pointer;
+}
+
+.item .contain-padlock:hover {
+ background-color: #e9f5fc;
+}
+
+.item .contain-padlock .padlock {
+ width: 5em;
+ height: 5em;
+ background-repeat: no-repeat;
+ background-size: contain;
+ background-position: center;
+ transition: 200ms;
+}
+
+.open {
+ background-image: url("../assets/padlock-open.svg");
+ transition: 200ms;
+}
+
+.closed {
+ background-image: url("../assets/padlock-closed.svg");
+ transition: 200ms;
+}
+
+
+/*travas end*/

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'ch_app/css/home.css' %}">
+  <link rel="stylesheet" href="{% static 'ch_app/css/temp.css' %}">
+{% endblock %}
+
+{% block title %}
+  <title>Home | Cat House 4.1</title>
+{% endblock %}
+
+{% block content %}
+  <div class="sub-container1">
+    <div class="sub-container-division">
+      <div class="temp">
+        <div class="graphic">
+          <div class="rectangle">
+            <div class="status" style="height:{{tempMedia}}%;"></div>
+          </div>
+        </div>
+        <div class="info">
+          <div>
+            <h5>Temperatura média</h5>
+            <h1>{{tempMedia}}<br>ºC</h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="luz">
+        <h5>Iluminação</h5>
+        {% if luzes == 0 or not luzes %}
+          <h5>Nenhuma lâmpada cadastrada.</h5>
+        {% else %}
+
+          {% for luz in luzes %}
+            <form name="lights{{luz.id}}" id="lights{{luz.id}}" action="/home" method="POST">
+              {% csrf_token %}
+              <div class="item">
+                <input type="hidden" id="ip" name="ip" value="{{luz.ip}}">
+                <div class="info">
+                  <h1>{{luz.name}}</h1>
+                  <h5>
+                    {% if luz.type == 'LUZ' %}
+                      Lâmpada
+                    {% endif %}
+                  </h5>
+                </div>
+
+                {% for keylight, valuelight in statuslight.items %}
+                  {% if keylight == luz.ip and valuelight == "OFF" %}
+
+                    <div class="contain-button" id="{{luz.type}}{{luz.id}}" onclick="switchButton.on('{{luz.type}}{{luz.id}}'); document.forms['lights{{luz.id}}'].submit()">
+                      <input type="hidden" name="ip" value="{{luz.ip}}">
+                      <input type="hidden" name="action" value="ON">
+                      <div class="ball"></div>
+                    </div>
+
+                  {% elif keylight == luz.ip and valuelight == "ON" %}
+                    <div class="contain-button powerOn" id="{{luz.type}}{{luz.id}}" onclick="switchButton.off('{{luz.type}}{{luz.id}}'); document.forms['lights{{luz.id}}'].submit()" style="justify-content: flex-end;">
+                      <input type="hidden" name="ip" value="{{luz.ip}}">
+                      <input type="hidden" name="action" value="OFF">
+                      <div class="ball"></div>
+                    </div>
+
+                  {% elif keylight == luz.ip and not valuelight %}
+                    <div class="contain-button">
+                      <div class="ball"></div>
+                    </div>
+
+                  {% endif %}
+                {% endfor %}
+
+              </div>
+            </form>
+
+          {% endfor %}
+        {% endif %}
+      </div>
+
+    </div>
+
+    <div>
+      <div class="all-lights">
+        <span></span>
+        <form action="/home" method="POST" name="start" id="start">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="START">
+          <a href="#" class="button" onclick="document.forms['start'].submit()">All Lights</a>
+        </form>
+      </div>
+    </div>
+
+    <div class="sub-container-division">
+        <div class="cams">
+          {% if cams == 0 or not cams %}
+            <img src="{% static 'ch_app/assets/no-cams.png' %}">
+          {% else %}
+            camera favorita
+          {% endif %}
+        </div>
+
+      <div class="travas">
+        <h5>Travas</h5>
+        {% if travas == 0 or not travas %}
+          <h5>Nenhuma trava cadastrada.</h5>
+        {% else %}
+          {% for trava in travas %}
+            <form name="trava{{trava.id}}" id="trava{{trava.id}}" action="/home" method="POST">
+              {% csrf_token %}
+              <div class="item">
+                <input type="hidden" id="ip" name="ip" value="{{trava.ip}}">
+                <div class="info">
+                  <h1>{{trava.name}}</h1>
+                  <h5>
+                    {% if trava.type == 'TRAVA' %}
+                      Trava
+                    {% endif %}
+                  </h5>
+                </div>
+                {% for keytrava, valuetrava in statustrava.items %}
+                  {% if keytrava == trava.ip and valuetrava == "OFF" %}
+                    <div class="contain-padlock" id="{{trava.type}}{{trava.id}}" onclick="padlockButton.closed('{{trava.type}}{{trava.id}}'); document.forms['trava{{trava.id}}'].submit()">
+                      <input type="hidden" name="ip" value="{{trava.ip}}">
+                      <input type="hidden" name="action" value="ON">
+                      <div class="padlock open"></div>
+                    </div>
+                  {% elif keytrava == trava.ip and valuetrava == "ON" %}
+                    <div class="contain-padlock" id="{{trava.type}}{{trava.id}}" onclick="padlockButton.open('{{trava.type}}{{trava.id}}'); document.forms['trava{{trava.id}}'].submit()">
+                      <input type="hidden" name="ip" value="{{trava.ip}}">
+                      <input type="hidden" name="action" value="OFF">
+                      <div class="padlock closed"></div>
+                    </div>
+                  {% elif keytrava == trava.ip and not valuetrava %}
+                    <div class="contain-padlock">
+                      <div class="padlock"></div>
+                    </div>
+
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+            </form>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+    </div>
+
+  </div>
+
+{% endblock %}

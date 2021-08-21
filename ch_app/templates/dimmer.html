@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'ch_app/css/dimmer.css' %}">
+{% endblock %}
+
+{% block title %}
+  <title>Dimmer | Cat House 4.1</title>
+{% endblock %}
+
+{% block content %}
+  {% if dimmers == 0 or not dimmers %}
+    <h5>Nenhum dimmer cadastrado.</h5>
+  {% else %}
+    <div class="sub-container-2columns">
+
+      {% for dimmer in dimmers %}
+
+        <div class="dimmer-item">
+          <h4>{{ dimmer.name }}</h4>
+          <div class="dimmer-form">
+            <form action="/dimmer" name="dimmer{{dimmer.ip}}"  method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="ip" value="{{dimmer.ip}}">
+
+              {% for keydimmer, valuedimmer in current_state.items %}
+                {% if keydimmer == dimmer.ip %}
+                  <input name="range" type="range" min="0" max="100" step="1" value="{{valuedimmer}}" list="dimmerrange">
+
+                  <datalist id="dimmerrange">
+                    <option value="0" label="0%">
+                      <option value="10">
+                        <option value="20">
+                          <option value="30">
+                            <option value="40">
+                              <option value="50" label="50%">
+                                <option value="60">
+                                  <option value="70">
+                                    <option value="80">
+                                      <option value="90">
+                                        <option value="100" label="100%"></datalist>
+
+                                        <input type="submit" value="Salvar">
+                                      {% endif %}
+                                    {% endfor %}
+                                  </form>
+                                </div>
+                              </div>
+
+                            {% endfor %}
+
+                          </div>
+                        {% endif %}
+                      {% endblock %}

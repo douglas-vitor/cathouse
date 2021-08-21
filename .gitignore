@@ -1,0 +1,5 @@
+.git
+CREDENCIAL.txt
+ch_app/__pycache__/*
+ch_app/migrations/*.py
+ch_app/migrations/__pycache__/*

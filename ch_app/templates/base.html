@@ -1,0 +1,88 @@
+{% load static %}
+
+{% if user.is_authenticated %}
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+                <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <meta name="theme-color" content="#0aa7f4">
+                        <link rel="shortcut icon" href="{% static 'ch_app/assets/logo.svg' %}" type="image/png">
+                        <link rel="stylesheet" href="{% static 'ch_app/css/main.css' %}">
+                        {% block styles %}{% endblock %}
+                        <link rel="stylesheet" href="{% static 'ch_app/css/mobile.css' %}">
+
+                        {% block title %}
+                                <title>Cat House 4.1</title>
+                        {% endblock %}
+                </head>
+                <body>
+                        <div class="container">
+                                <nav>
+                                        <div>
+                                        Cat House
+                                        </div>
+                                        {% if user.is_authenticated %}
+                                                <a href="{% url 'logout'%}?next={{request.path}}">Sair</a>
+                                        {% endif %}
+                                </nav>
+
+                                <div class="menu">
+                                        <u>
+                                                <a href="home">HOME</a>
+                                        </u>
+                                        <u>
+                                                <a href="tomada">TOMADA</a>
+                                        </u>
+                                        <u>
+                                                <a href="temperatura">TEMPERATURA</a>
+                                        </u>
+                                        <u>
+                                                <a href="camera">CÂMERA</a>
+                                        </u>
+                                        <u>
+                                                <a href="agendamento">AGENDAMENTO</a>
+                                        </u>
+                                        <u>
+                                                <a href="dimmer">DIMMER</a>
+                                        </u>
+                                        <u>
+                                                <a href="rgb">RGB</a>
+                                        </u>
+                                </div>
+
+                                <div class="menu-mobile">
+                                        <div class="menu-nav" onclick="menu.open()">MENU</div>
+                                        <div class="menu-container">
+                                                <u>
+                                                        <a href="home">HOME</a>
+                                                </u>
+                                                <u>
+                                                        <a href="tomada">TOMADA</a>
+                                                </u>
+                                                <u>
+                                                        <a href="temperatura">TEMPERATURA</a>
+                                                </u>
+                                                <u>
+                                                        <a href="camera">CÂMERA</a>
+                                                </u>
+                                                <u>
+                                                        <a href="agendamento">AGENDAMENTO</a>
+                                                </u>
+                                                <u>
+                                                        <a href="dimmer">DIMMER</a>
+                                                </u>
+                                                <u>
+                                                        <a href="rgb">RGB</a>
+                                                </u>
+                                        </div>
+                                </div>
+
+                                {% block content %}{% endblock %}
+
+                        </div>
+                        <script src="{% static 'ch_app/js/scripts.js' %}"></script>
+                        {% block scripts %}{% endblock %}
+                </body>
+        </html>
+{% endif %}

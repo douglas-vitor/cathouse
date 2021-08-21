@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'ch_app/css/home.css' %}">
+{% endblock %}
+
+{% block title %}
+        <title>Energia | Cat House 4.1</title>
+{% endblock %}
+
+{% block content %}
+
+        {% if tomadas == 0 or not tomadas %}
+                <h5>Nenhuma tomada cadastrada.</h5>
+        {% else %}
+                <div class="sub-container-2columns">
+
+                        {% for tomada in tomadas %}
+                                <form name="powerplugs{{tomada.id}}" id="powerplugs{{tomada.id}}" action="/tomada" method="POST">
+                                        {% csrf_token %}
+                                        <div class="item">
+                                                <input type="hidden" id="ip" name="ip" value="{{tomada.ip}}">
+                                                <div class="info">
+                                                        <h1>{{tomada.name}}</h1>
+                                                        <h5>
+                                                                {% if tomada.type == "TOMADA" %}
+                Power
+        {% endif %}
+                                                        </h5>
+                                                </div>
+
+                                                {% for keytomada, valuetomada in statustomada.items %}
+                                                        {% if keytomada == tomada.ip and valuetomada == "OFF" %}
+
+                                                                <div class="contain-button" id="{{tomada.type}}{{tomada.id}}" onclick="switchButton.on('{{tomada.type}}{{tomada.id}}'); document.forms['powerplugs{{tomada.id}}'].submit()">
+                                                                        <input type="hidden" name="ip" value="{{tomada.ip}}">
+                                                                        <input type="hidden" name="action" value="ON">
+                                                                        <div class="ball"></div>
+                                                                </div>
+
+                                                        {% elif keytomada == tomada.ip and valuetomada == "ON" %}
+                                                                <div class="contain-button powerOn" id="{{tomada.type}}{{tomada.id}}" onclick="switchButton.off('{{tomada.type}}{{tomada.id}}'); document.forms['powerplugs{{tomada.id}}'].submit()" style="justify-content: flex-end;">
+                                                                        <input type="hidden" name="ip" value="{{tomada.ip}}">
+                                                                        <input type="hidden" name="action" value="OFF">
+                                                                        <div class="ball"></div>
+                                                                </div>
+
+                                                        {% elif keytomada == tomada.ip and not valuetomada %}
+                                                                <div class="contain-button">
+                                                                        <div class="ball"></div>
+                                                                </div>
+
+                                                        {% endif %}
+                                                {% endfor %}
+                                        </div>
+                                </form>
+
+                        {% endfor %}
+                </div>
+        {% endif %}
+
+{% endblock %}

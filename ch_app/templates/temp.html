@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+	<link rel="stylesheet" href="{% static 'ch_app/css/temp.css' %}">
+{% endblock %}
+
+{% block title %}
+	<title>Temperatura | Cat House 4.1</title>
+{% endblock %}
+
+{% block content %}
+
+	{% if temperatura == 0 or not temperatura %}
+		<h5>Nenhum sensor cadastrado.</h5>
+	{% else %}
+		<div class="sub-container-2columns">
+			{% for sensor in sensores %}
+				{% for keytemp, valuetemp in temperatura.items %}
+					{% for keyhumid, valuehumid in humidade.items %}
+						{% if keytemp == sensor.ip and keyhumid == sensor.ip %}
+
+							<div class="temp-item">
+								<div class="temp">
+									<div class="graphic">
+										<div class="rectangle">
+											<div class="status" style="height:{{valuetemp}}%;"></div>
+										</div>
+									</div>
+
+									<div class="info">
+										<h3>{{sensor.name}}</h3>
+										<h5>Temperatura</h5>
+										<h1>{{valuetemp}}ºC</h1>
+									</div>
+								</div>
+
+								<div class="umid">
+									<span></span>
+									<div class="info">
+										<h5>Umidade</h5>
+										<h1>{{valuehumid}}%</h1>
+									</div>
+								</div>
+
+							</div>
+
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+			{% endfor %}
+		</div>
+	{% endif %}
+
+{% endblock %}
