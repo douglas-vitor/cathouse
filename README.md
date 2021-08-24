@@ -2,15 +2,8 @@
 
 <div align="center">
 <img src="catsecurity_logo.png" width="150px" height="auto">
-
-
-[![Watch the video](https://img.youtube.com/vi/xijSG8YVUh4/maxresdefault.jpg)](https://youtu.be/xijSG8YVUh4)
 </div>
 
-
-### **Credenciais**
-###### Usuário: 
-###### Senha: 
 
 
 ## **Instalação**
@@ -43,7 +36,7 @@ django-admin startproject ch4_1 .
 ```
 
 ### **Settings.py**
-Vá para o diretório ch4_1 e altere o settings.py; dentro da lista INSTALLED_APPS, adicione o App 'ch_app' .
+Vá para o diretório ch4_1 e altere o _settings.py_ ; dentro da lista INSTALLED_APPS, adicione o App 'ch_app' .
 No fim deste mesmo arquivo adicione as seguintes linhas:
 ```
 STATIC_URL = '/ch_app/static/'
@@ -53,7 +46,7 @@ LOGIN_REDIRECT_URL = 'home'
 Então salve e feche o arquivo.
 
 ### **urls.py**
-Ainda no diretório ch4_1 abra o arquivo urls.py para realizar as seguintes modificações.
+Ainda no diretório ch4_1 abra o arquivo _urls.py_ para realizar as seguintes modificações.
 Adicione o seguinte import:
 ```
 from django.urls import include
