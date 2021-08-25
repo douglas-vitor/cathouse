@@ -73,7 +73,10 @@ def home(req):
 				somaTemp += currentTemp
 			except:
 				pass
-		mediaTemp = somaTemp / temp_sensores.count()
+		try:
+			mediaTemp = somaTemp / temp_sensores.count()
+		except:
+			mediaTemp = 0
 
 
 		return render(req, 'home.html', {'luzes': luzes,
