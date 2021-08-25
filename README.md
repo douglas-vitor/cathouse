@@ -5,6 +5,8 @@
 </div>
 
 
+###### **Na pasta _prints_ você pode ver algumas imagens do resultado do App funcionando.**
+
 
 ## **Instalação**
 
