@@ -6,6 +6,8 @@ import requests
 import json
 from django.http import HttpResponseRedirect
 import logging
+from .complements import powerReles
+
 
 logger = logging.getLogger(__file__)
 
@@ -16,25 +18,14 @@ def index(req):
 def home(req):
 	if req.user.is_authenticated:
 		if req.POST:
-			if req.POST['action'] == 'ON':
-				try:
-					requests.get("http://" + req.POST['ip'] + "/cm?cmnd=Power%20On", timeout=2)
-				except:
-					pass
-			elif req.POST['action'] == 'OFF':
-				try:
-					requests.get("http://" + req.POST['ip'] + "/cm?cmnd=Power%20Off", timeout=2)
-				except:
-					pass
-			elif req.POST['action'] == 'START':
+			powerReles(req.POST['action'], req.POST['ip'])
+
+			if req.POST['action'] == 'START':
 				for rAll in models.R_wifi.objects.filter(type="LUZ"):
 					try:
 						requests.get("http://" + rAll.ip + "/cm?cmnd=Power%20On", timeout=2)
 					except:
 						pass
-			else:
-				pass
-
 
 
 		statuslight = {}
@@ -123,18 +114,7 @@ def temp(req):
 def tomada(req):
 	if req.user.is_authenticated:
 		if req.POST:
-			if req.POST['action'] == 'ON':
-				try:
-					requests.get("http://" + req.POST['ip'] + "/cm?cmnd=Power%20On", timeout=2)
-				except:
-					pass
-			elif req.POST['action'] == 'OFF':
-				try:
-					requests.get("http://" + req.POST['ip'] + "/cm?cmnd=Power%20Off", timeout=2)
-				except:
-					pass
-			else:
-				pass
+			powerReles(req.POST['action'], req.POST['ip'])
 
 
 		statustomada = {}
