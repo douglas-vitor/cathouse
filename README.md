@@ -96,7 +96,7 @@ python3 manage.py runserver
 
 ### **Tabela Timers**
 ###### **Arm = _0 = Desligado; 1 = Ligado;_**
-###### **Time = _Hora no formato 24Horas HH:MM;**_
+###### **Time = _Hora no formato 24Horas HH:MM;_**
 ###### **Window = _0;_**
 ###### **Days = _Iniciais dos dias da semana em inglês, substituindo os dias não desejados por " - ", exemplo: S-TW-FS ;_**
 ###### **Repeat_timer = _0 = Não repetir; 1 = Repetir;_**
