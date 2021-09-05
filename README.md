@@ -82,3 +82,26 @@ Agora execute o comando a baixo para iniciar o servidor para poder testar o App.
 ```
 python3 manage.py runserver
 ```
+
+## **Informações tabelas BD**
+### **Tabela R_wifis** 
+###### **Rw e Ip = _Ip interno do dispositivo IOT;_**
+###### **Type = _Tipo deste dispositivo (LUZ, TOMADA, TRAVA);_**
+###### **Type2 = _Tipo complementar deste dispositivo, usado no caso de dimmers ou RGB (DIMMER = com dimmer; RGB = com RGB ou 0 = nenhum);_**
+###### **Name = _Nome do dispositivo "Recomendado colocar o nome do ambiente onde esta o dispositivo IOT";_**
+
+### **Tabela Sensor_wifis**
+###### **Ip = _Ip interno do dispositivo IOT;_**
+###### **Name = _Nome do dispositivo "Recomendado colocar o nome do ambiente onde esta o dispositivo IOT";_**
+
+### **Tabela Timers**
+###### **Arm = _0 = Desligado; 1 = Ligado;_**
+###### **Time = _Hora no formato 24Horas HH:MM;**_
+###### **Window = _0;_**
+###### **Days = _Iniciais dos dias da semana em inglês, substituindo os dias não desejados por " - ", exemplo: S-TW-FS ;_**
+###### **Repeat_timer = _0 = Não repetir; 1 = Repetir;_**
+###### **Output = _1;_**
+###### **Action = _0 = Desligar; 1 = Ligar;_**
+###### **Ip = _Ip interno do dispositivo IOT_**
+###### **Name = _Nome do timer no seguinte formato: timer{NUM}. Exemplo: timer2, timer6;_**
+###### **Name_for_user = _Nome resumido para o usuário;_**
