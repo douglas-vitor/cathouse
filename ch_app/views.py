@@ -7,6 +7,12 @@ import json
 from django.http import HttpResponseRedirect
 import logging
 from .complements import powerReles
+from .complements import allLights
+from .complements import statusReles
+from .complements import mediaTemp
+from .complements import showTemp
+from .complements import showHumid
+from .complements import createAlarm
 
 
 logger = logging.getLogger(__file__)
@@ -18,57 +24,23 @@ def index(req):
 def home(req):
 	if req.user.is_authenticated:
 		if req.POST:
-			powerReles(req.POST['action'], req.POST['ip'])
-
-			if req.POST['action'] == 'START':
-				for rAll in models.R_wifi.objects.filter(type="LUZ"):
-					try:
-						requests.get("http://" + rAll.ip + "/cm?cmnd=Power%20On", timeout=2)
-					except:
-						pass
-
-
-		statuslight = {}
-
-		for r in models.R_wifi.objects.filter(type="LUZ"):
 			try:
-				checkStatus = requests.get("http://" + r.ip + "/cm?cmnd=Power", timeout=2)
-				decode = json.loads(checkStatus.content.decode('utf-8'))['POWER']
-				statuslight[r.ip] = decode
+				allLights(req.POST['action'])
+			except:
+				pass
+			try:
+				powerReles(req.POST['action'], req.POST['ip'])
 			except:
 				pass
 
-		statustrava = {}
-
-		for t in models.R_wifi.objects.filter(type="TRAVA"):
-			try:
-				checkStatusTrava = requests.get("http://" + t.ip + "/cm?cmnd=Power", timeout=2)
-				decodeTrava = json.loads(checkStatusTrava.content.decode('utf-8'))['POWER']
-				statustrava[t.ip] = decodeTrava
-			except:
-				pass
-
+		statuslight = statusReles(type="LUZ")
+		statustrava = statusReles(type="TRAVA")
 
 		luzes = models.R_wifi.objects.filter(type="LUZ")
 		travas = models.R_wifi.objects.filter(type="TRAVA")
 		cams = models.R_wifi.objects.filter(type="CAM")
 
-		temp_sensores = models.Sensor_wifi.objects.all()
-		somaTemp = 0.0
-
-		for s in temp_sensores:
-			try:
-				tempstatus = requests.get("http://" + s.ip + "/cm?cmnd=status%208", timeout=2)
-				temp_decode = json.loads(tempstatus.content.decode('utf-8'))['StatusSNS']['DHT11']['Temperature']
-				currentTemp = temp_decode
-				somaTemp += currentTemp
-			except:
-				pass
-		try:
-			mediaTemp = somaTemp / temp_sensores.count()
-		except:
-			mediaTemp = 0
-
+		mediaTemp()
 
 		return render(req, 'home.html', {'luzes': luzes,
 						'travas': travas,
@@ -82,25 +54,8 @@ def home(req):
 
 def temp(req):
 	if req.user.is_authenticated:
-		temperatura = {}
-
-		for t in models.Sensor_wifi.objects.all():
-			try:
-				checkTemp = requests.get("http://" + t.ip + "/cm?cmnd=status%208", timeout=2)
-				decodeTemp = json.loads(checkTemp.content.decode('utf-8'))['StatusSNS']['DHT11']['Temperature']
-				temperatura[t.ip] = decodeTemp
-			except:
-				pass
-
-		humidade = {}
-
-		for h in models.Sensor_wifi.objects.all():
-			try:
-				checkHumid = requests.get("http://" + h.ip + "/cm?cmnd=status%208", timeout=2)
-				decodeHumid = json.loads(checkHumid.content.decode('utf-8'))['StatusSNS']['DHT11']['Humidity']
-				humidade[h.ip] = decodeHumid
-			except:
-				pass
+		temperatura = showTemp()
+		humidade = showHumid()
 
 		sensores = models.Sensor_wifi.objects.all()
 
@@ -116,16 +71,7 @@ def tomada(req):
 		if req.POST:
 			powerReles(req.POST['action'], req.POST['ip'])
 
-
-		statustomada = {}
-
-		for t in models.R_wifi.objects.filter(type="TOMADA"):
-			try:
-				checkStatus = requests.get("http://" + t.ip + "/cm?cmnd=Power", timeout=2)
-				decode = json.loads(checkStatus.content.decode('utf-8'))['POWER']
-				statustomada[t.ip] = decode
-			except:
-				pass
+		statustomada = statusReles(type="TOMADA")
 
 		tomadas = models.R_wifi.objects.filter(type="TOMADA")
 
@@ -145,94 +91,20 @@ def camera(req):
 def agendamento(req):
 	if req.user.is_authenticated:
 		if req.POST:
-			if req.POST['thing'] and req.POST['clock'] and req.POST['action'] and req.POST['hidden_ativar1'] and req.POST['hidden_repetir1']:
-				thing = req.POST['thing']
-				clock = req.POST['clock']
-				action = req.POST['action']
-
-				dom = req.POST.get('dom', '-')
-				seg = req.POST.get('seg', '-')
-				ter = req.POST.get('ter', '-')
-				qua = req.POST.get('qua', '-')
-				qui = req.POST.get('qui', '-')
-				sex = req.POST.get('sex', '-')
-				sab = req.POST.get('sab', '-')
-				days = dom + seg + ter + qua + qui + sex + sab
-
-				arm = ''
-				repeat = ''
-				action = ''
-				nameAction = ''
-				if req.POST['hidden_ativar1'] == 'yes': arm = 1
-				if req.POST['hidden_ativar1'] == 'no': arm = 0
-
-				if req.POST['hidden_repetir1'] == 'yes': repeat = 1
-				if req.POST['hidden_repetir1'] == 'no': repeat = 0
-
-				if req.POST['action'] == 'on':
-					action = 1
-					nameAction = 'Ligar'
-				if req.POST['action'] == 'off':
-					action = 0
-					nameAction = 'Desligar'
-
-				searchTypeOfThing = ''
-				searchNameOfThing = ''
-				for item in models.R_wifi.objects.filter(rw=req.POST['thing']):
-					searchNameOfThing = item.name.lower()
-					if item.type == "LUZ":
-						searchTypeOfThing = 'lâmpada'
-					else:
-						searchTypeOfThing = item.type.lower()
-
-				timerName = ''
-				timerCount = 1
-				timerCreate = False
-				timerUpdate = False
-				countTimers = models.Timer.objects.filter(ip=req.POST['thing']).count()
-				countTimerNA = models.Timer.objects.filter(ip=req.POST['thing'], time='na').count()
-				if countTimers == 0:
-					timerName = 'timer1'
-					timerCreate = True
-				elif countTimers > 0 and countTimers <= 10:
-					if countTimerNA > 0:
-						for seq in range(9):
-							timerName = 'timer' + str(timerCount)
-							if models.Timer.objects.filter(ip=req.POST['thing'], time='na', name=timerName).count() > 0:
-								timerName = 'timer' + str(timerCount)
-								timerUpdate = True
-								break
-							else:
-								timerCount += 1
-					else:
-						for s in range(9):
-							timerName = 'timer' + str(timerCount)
-							if models.Timer.objects.filter(ip=req.POST['thing'], name=timerName).count() == 0:
-								timerName = 'timer' + str(timerCount)
-								timerCreate = True
-								break
-							else:
-								timerCount += 1
-
-				cmd = timerName+'{"Arm":'+str(arm)+',"Enable":'+str(arm)+',"Time":'+"'"+clock+"'"+',"Window":0,"Days":'+days+',"Repeat":'+str(repeat)+',"Output":1,"Action":'+str(action)+'}'
-				if timerCreate == True:
-					try:
-						name_for_user = nameAction + ' ' + searchTypeOfThing + ' ' + searchNameOfThing
-						models.Timer.objects.create(arm=arm, time=clock, window="0", days=days, repeat_timer=repeat, output="1", action=action, ip=thing, name=timerName, name_for_user=name_for_user)
-					except:
-						pass
-
-				if timerUpdate == True:
-					try:
-						name_for_user = nameAction + ' ' + searchTypeOfThing + ' ' + searchNameOfThing
-						models.Timer.objects.filter(ip=req.POST['thing'], time='na', name=timerName).update(arm=arm, time=clock, window="0", days=days, repeat_timer=repeat, output="1", action=action, ip=thing, name=timerName, name_for_user=name_for_user)
-					except:
-						pass
-
-				try:
-					requests.get("http://" + thing + "/cm?cmnd=" + cmd, timeout=2)
-				except:
-					pass
+			createAlarm(
+				recThing=req.POST['thing'], 
+				recClock=req.POST['clock'], 
+				recAction=req.POST['action'], 
+				recActive=req.POST['hidden_ativar1'], 
+				recRepeat=req.POST['hidden_repetir1'],
+				recDom = req.POST.get('dom', '-'),
+				recSeg = req.POST.get('seg', '-'),
+				recTer = req.POST.get('ter', '-'),
+				recQua = req.POST.get('qua', '-'),
+				recQui = req.POST.get('qui', '-'),
+				recSex = req.POST.get('sex', '-'),
+				recSab = req.POST.get('sab', '-')
+				)
 
 
 		alarms = models.Timer.objects.all().exclude(time="na")
