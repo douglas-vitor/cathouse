@@ -10,13 +10,13 @@ Funções de complemento para as views
 def powerReles(action=None, ip=None):
     if action == 'ON' and len(action) == 2:
         try:
-            if len(ip) <= 15 and len(ip) > 4:
+            if len(ip) <= 15 and len(ip) >= 7:
                 requests.get("http://" + ip + "/cm?cmnd=Power%20On", timeout=2)
         except:
             return
     elif action == 'OFF' and len(action) == 3:
         try:
-            if len(ip) <= 15 and len(ip) > 4:
+            if len(ip) <= 15 and len(ip) >= 7:
                 requests.get("http://" + ip + "/cm?cmnd=Power%20Off", timeout=2)
         except:
             return
@@ -187,6 +187,50 @@ def createAlarm(recThing,
 
         try:
             requests.get("http://" + thing + "/cm?cmnd=" + cmd, timeout=2)
+        except:
+            pass
+    return
+
+
+def updateAlarm(recActive, recIp, recTimer, recRepeat):
+    if recActive and recIp and recTimer and recRepeat:
+        alarm_ativar = ''
+        alarm_repeat = ''
+        if recActive == 'yes': alarm_ativar = 1
+        if recActive == 'no': alarm_ativar = 0
+        if recRepeat == 'yes': alarm_repeat = 1
+        if recRepeat == 'no': alarm_repeat = 0
+
+        if len(recIp) <= 15 and len(recIp) >= 7:
+            pass
+        else:
+            return
+
+        alarmBD = models.Timer.objects.filter(ip=recIp, name=recTimer)
+        for data in alarmBD:
+            cmd = data.name+'{"Arm":'+str(alarm_ativar)+',"Enable":'+str(alarm_ativar)+',"Time":'+"'"+data.time+"'"+',"Window":0,"Days":'+data.days+',"Repeat":'+str(alarm_repeat)+',"Output":1,"Action":'+str(data.action)+'}'
+
+        try:
+            models.Timer.objects.filter(ip=recIp, name=recTimer).update(arm=alarm_ativar, repeat_timer=alarm_repeat)
+            requests.get("http://" + recIp + "/cm?cmnd=" + cmd, timeout=2)
+        except:
+            pass
+        return
+    return
+
+def dellAlarm(recTime, recId, recIp, recTimer):
+    if recTime and recId and recIp and recTimer:
+        if len(recIp) <= 15 and len(recIp) >= 7:
+            pass
+        else:
+            return
+        alarmBD = models.Timer.objects.filter(ip=recIp, name=recTimer)
+        for data in alarmBD:
+            cmd = data.name+'{"Arm":0,"Enable":0,"Time":'+"'"+data.time+"'"+',"Window":0,"Days":'+data.days+',"Repeat":0,"Output":1,"Action":'+str(data.action)+'}'
+
+        try:
+            models.Timer.objects.filter(ip=recIp, name=recTimer).update(time='na')
+            requests.get("http://" + recIp + "/cm?cmnd=" + cmd, timeout=2)
         except:
             pass
     return

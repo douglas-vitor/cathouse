@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from ch_app import models
 
 import requests
@@ -13,6 +12,8 @@ from .complements import mediaTemp
 from .complements import showTemp
 from .complements import showHumid
 from .complements import createAlarm
+from .complements import updateAlarm
+from .complements import dellAlarm
 
 
 logger = logging.getLogger(__file__)
@@ -117,23 +118,12 @@ def agendamento(req):
 def updatealarm(req, id):
 	if req.user.is_authenticated:
 		if id:
-			if req.POST['hidden_alarm_ativar'] and req.POST['ip'] and req.POST['timer'] and req.POST['hidden_alarm_repetir']:
-				alarm_ativar = ''
-				alarm_repeat = ''
-				if req.POST['hidden_alarm_ativar'] == 'yes': alarm_ativar = 1
-				if req.POST['hidden_alarm_ativar'] == 'no': alarm_ativar = 0
-				if req.POST['hidden_alarm_repetir'] == 'yes': alarm_repeat = 1
-				if req.POST['hidden_alarm_repetir'] == 'no': alarm_repeat = 0
-
-				alarmBD = models.Timer.objects.filter(ip=req.POST['ip'], name=req.POST['timer'])
-				for data in alarmBD:
-					cmd = data.name+'{"Arm":'+str(alarm_ativar)+',"Enable":'+str(alarm_ativar)+',"Time":'+"'"+data.time+"'"+',"Window":0,"Days":'+data.days+',"Repeat":'+str(alarm_repeat)+',"Output":1,"Action":'+str(data.action)+'}'
-
-				try:
-					models.Timer.objects.filter(ip=req.POST['ip'], name=req.POST['timer']).update(arm=alarm_ativar, repeat_timer=alarm_repeat)
-					requests.get("http://" + req.POST['ip'] + "/cm?cmnd=" + cmd, timeout=2)
-				except:
-					pass
+			updateAlarm(
+				recActive=req.POST['hidden_alarm_ativar'],
+				recIp=req.POST['ip'],
+				recTimer=req.POST['timer'],
+				recRepeat=req.POST['hidden_alarm_repetir']
+				)
 		else:
 			pass
 
@@ -145,17 +135,12 @@ def updatealarm(req, id):
 def dellalarm(req, id):
 	if req.user.is_authenticated:
 		if id:
-			if req.POST['time'] and req.POST['id'] and req.POST['ip'] and req.POST['timer']:
-				alarmBD = models.Timer.objects.filter(ip=req.POST['ip'], name=req.POST['timer'])
-				for data in alarmBD:
-					cmd = data.name+'{"Arm":0,"Enable":0,"Time":'+"'"+data.time+"'"+',"Window":0,"Days":'+data.days+',"Repeat":0,"Output":1,"Action":'+str(data.action)+'}'
-
-				try:
-					models.Timer.objects.filter(ip=req.POST['ip'], name=req.POST['timer']).update(time='na')
-					requests.get("http://" + req.POST['ip'] + "/cm?cmnd=" + cmd, timeout=2)
-				except:
-					pass
-
+			dellAlarm(
+				recTime=req.POST['time'],
+				recId=req.POST['id'],
+				recIp=req.POST['ip'],
+				recTimer=req.POST['timer']
+			)
 		else:
 			pass
 
