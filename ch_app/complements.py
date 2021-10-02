@@ -238,7 +238,7 @@ def dellAlarm(recTime, recId, recIp, recTimer):
     return
 
 def powerDimmer(setRange=None, ip=None):
-    if ip and setRange and len(ip) <= 15 and len(ip) >= 7 and setRange >= 0 and setRange <= 100:
+    if ip and setRange and len(ip) <= 15 and len(ip) >= 7 and int(setRange) >= 0 and int(setRange) <= 100:
         try:
             requests.get("http://" + ip + "/cm?cmnd=Dimmer%20" + setRange, timeout=2)
         except Exception:
