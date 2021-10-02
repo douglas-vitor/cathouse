@@ -17,6 +17,7 @@
                         {% endblock %}
                 </head>
                 <body>
+                        <div class="loading" id="loading">loading...</div>
                         <div class="container">
                                 <nav>
                                         <div>
@@ -83,6 +84,7 @@
                         </div>
                         <script src="{% static 'ch_app/js/scripts.js' %}"></script>
                         {% block scripts %}{% endblock %}
+                        <script src="{% static 'ch_app/js/loading.js' %}"></script>
                 </body>
         </html>
 {% endif %}

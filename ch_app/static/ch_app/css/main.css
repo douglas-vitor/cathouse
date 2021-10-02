@@ -184,5 +184,22 @@ body {
  border: 1px solid #00fff2;
 }
 
+.loading { 
+    position: fixed;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.342);
+}
+.loading-ok {
+    visibility: hidden;
+    opacity: 0;
+    transition: 300ms;
+}
 
 /* end main */
