@@ -1,6 +1,9 @@
 import requests
 from ch_app import models
 import json
+import logging
+
+logger = logging.getLogger(__file__)
 
 
 """"
