@@ -191,7 +191,6 @@ def createAlarm(recThing,
             pass
     return
 
-
 def updateAlarm(recActive, recIp, recTimer, recRepeat):
     if recActive and recIp and recTimer and recRepeat:
         alarm_ativar = ''
@@ -234,3 +233,27 @@ def dellAlarm(recTime, recId, recIp, recTimer):
         except:
             pass
     return
+
+def powerDimmer(setRange=None, ip=None):
+    if ip and setRange and len(ip) <= 15 and len(ip) >= 7 and setRange >= 0 and setRange <= 100:
+        try:
+            requests.get("http://" + ip + "/cm?cmnd=Dimmer%20" + setRange, timeout=2)
+        except Exception:
+            logger.exception("Não foi possivel se comunicar com o dimmer.")
+            return
+
+    return
+
+def statusPercentDimmer():
+    dimmers_percent = {}
+    for d in models.R_wifi.objects.filter(type2='DIMMER'):
+        try:
+            checkDimmer = requests.get("http://" + d.ip + "/cm?cmnd=Dimmer", timeout=2)
+            decodeDimmer = json.loads(checkDimmer.content.decode('utf-8'))["Dimmer"]
+            dimmers_percent[d.ip] = decodeDimmer
+        except Exception:
+            logger.exception("Chamada para o dimmer falhou.")
+            pass
+
+    return dimmers_percent
+

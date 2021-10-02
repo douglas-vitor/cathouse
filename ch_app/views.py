@@ -14,6 +14,8 @@ from .complements import showHumid
 from .complements import createAlarm
 from .complements import updateAlarm
 from .complements import dellAlarm
+from .complements import powerDimmer
+from .complements import statusPercentDimmer
 
 
 logger = logging.getLogger(__file__)
@@ -21,6 +23,7 @@ logger = logging.getLogger(__file__)
 
 def index(req):
 	return
+
 
 def home(req):
 	if req.user.is_authenticated:
@@ -152,25 +155,12 @@ def dellalarm(req, id):
 def dimmer(req):
 	if req.user.is_authenticated:
 		if req.POST:
-			if req.POST['ip'] and req.POST['range']:
-				try:
-					requests.get("http://" + req.POST['ip'] + "/cm?cmnd=Dimmer%20" + req.POST['range'], timeout=2)
-				except Exception:
-					logger.exception("Não foi possivel se comunicar com o dimmer.")
-					pass
+			powerDimmer(
+				setRange = req.POST.get('range', 0),
+				ip = req.POST['ip']
+				)
 
-
-		dimmers = models.R_wifi.objects.filter(type2='DIMMER')
-
-		dimmers_percent = {}
-		for d in dimmers:
-			try:
-				checkDimmer = requests.get("http://" + d.ip + "/cm?cmnd=Dimmer", timeout=2)
-				decodeDimmer = json.loads(checkDimmer.content.decode('utf-8'))["Dimmer"]
-				dimmers_percent[d.ip] = decodeDimmer
-			except Exception:
-				logger.exception("Chamada para o dimmer falhou.")
-				pass
+		dimmers_percent = statusPercentDimmer()
 
 		return render(req, 'dimmer.html', {'dimmers': dimmers, 'current_state': dimmers_percent})
 	else:
