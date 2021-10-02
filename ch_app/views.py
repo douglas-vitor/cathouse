@@ -160,6 +160,7 @@ def dimmer(req):
 				ip = req.POST['ip']
 				)
 
+		dimmers = models.R_wifi.objects.filter(type2='DIMMER')
 		dimmers_percent = statusPercentDimmer()
 
 		return render(req, 'dimmer.html', {'dimmers': dimmers, 'current_state': dimmers_percent})
