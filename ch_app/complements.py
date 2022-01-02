@@ -266,9 +266,10 @@ def statusRGB():
         try:
             checkRgb = request.get("http://" + rgb.ip + "/json/state", timeout=2)
             decodeRgb = json.loads(checkRgb.content.decode('utf-8'))
+            rgbs_status[rgb.ip] = decodeRgb
             
         except:
             pass
     
-    return decodeRgb
+    return rgbs_status
 
