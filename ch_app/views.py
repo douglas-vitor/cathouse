@@ -172,7 +172,8 @@ def dimmer(req):
 def rgb(req):
 	if req.user.is_authenticated:
 		rgbs = models.R_wifi.objects.filter(type2='RGB')
-		print(statusRGB())
+		teste = statusRGB()
+		print(teste)
 		return render(req, 'rgb.html', {'rgbs': rgbs})
 	else:
 		return HttpResponseRedirect("/login")
