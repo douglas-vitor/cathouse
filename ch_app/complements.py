@@ -262,7 +262,7 @@ def statusPercentDimmer():
 
 def statusRGB():
     rgbs_status = {}
-    for rgb in rgbs = models.R_wifi.objects.filter(type2='RGB'):
+    for rgb in models.R_wifi.objects.filter(type2='RGB'):
         try:
             checkRgb = request.get("http://" + rgb.ip + "/json/state", timeout=2)
             decodeRgb = json.loads(checkRgb.content.decode('utf-8'))
