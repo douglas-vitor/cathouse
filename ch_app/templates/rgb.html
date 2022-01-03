@@ -16,11 +16,7 @@
         <div class="sub-container-2columns">
             {% for rgb in rgbs %}
             
-            {% for keyrgb, valuergb in rgb_power %}
-            {% if keyrgb == rgb.ip %}
-                {{valuergb}}
-            {% endif %}
-            {% endfor %}
+            {rgb_power}
 
 
             {% endfor %}
