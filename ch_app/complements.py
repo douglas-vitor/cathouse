@@ -265,7 +265,7 @@ def statusRGB():
     for rgb in models.R_wifi.objects.filter(type2='RGB'):
         try:
             checkRgb = requests.get("http://" + rgb.ip + "/json/state", timeout=2)
-            decodeRgb = json.loads(checkRgb.content.decode('utf-8'))["on"]
+            decodeRgb = json.loads(checkRgb.content.decode('utf-8'))
             rgbs_status[rgb.ip] = decodeRgb
             
         except:
