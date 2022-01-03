@@ -15,7 +15,12 @@
     {% else %}
         <div class="sub-container-2columns">
             {% for rgb in rgbs %}
-                {{ rgb_state.on }}
+            
+            {% for keyrgb, valuergb in rgb_state%}
+                {{valuergb}}
+            {% endfor %}
+
+
             {% endfor %}
         </div>
     {% endif %}
