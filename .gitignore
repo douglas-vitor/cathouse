@@ -3,3 +3,6 @@ CREDENCIAL.txt
 ch_app/__pycache__/*
 ch_app/migrations/*.py
 ch_app/migrations/__pycache__/*
+ch4_1/*
+manage.py
+db.sqlite3
