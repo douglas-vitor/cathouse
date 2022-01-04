@@ -6,7 +6,7 @@
  margin-top: 1em;
  overflow-y: auto;
  overflow-x: hidden;
- height: 15em;
+ height: 15em; /*15em*/
 }
 
 .container .luz>h5,
@@ -128,3 +128,23 @@
 
 
 /*travas end*/
+
+/* RGB */
+.info .morergb input[type="range"] {
+    width: 19em;
+}
+
+.info .morergb input[type="submit"] {
+    width: 7.5em;
+    margin-left: 1.5em;
+    background-color: #87CEFA;
+    color: #ffffff;
+    font-weight: bold;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    display: flex-end;
+}
+
+.info select {
+    margin-left: 1em;
+}

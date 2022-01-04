@@ -86,7 +86,7 @@
  .container .all-lights {
   margin-top: 2em;
  }
- .sub-container-2columns {
+ #sub-container-2columns {
   grid-template-columns: 1fr;
   justify-items: center;
  }

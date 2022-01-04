@@ -2,25 +2,90 @@
 
 {% load static %}
 
-{% block styles %}{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'ch_app/css/home.css' %}">
+{% endblock %}
 
 {% block title %}
-    <title>RGB | Cat House 4.1</title>
+<title>RGB | Cat House 4.1</title>
 {% endblock %}
 
 {% block content %}
 
-    {% if rgbs == 0 or not rgbs %}
-        <h5>Nenhum terminal RGB cadastrado.</h5>
-    {% else %}
-        <div class="sub-container-2columns">
-            {% for rgb in rgbs %}
-            
-            {{rgb_power}}
+{% if rgbs == 0 or not rgbs %}
+<h5>Nenhum terminal RGB cadastrado.</h5>
+{% else %}
+<div id="sub-container-2columns" class="sub-container-2columns">
+    {% for rgb in rgbs %}
+    <form name="rgb{{rgb.ip}}" id="rgb{{rgb.ip}}" action="" method="POST">
+        <div class="item">
+            <div class="info">
+                <h1>{{rgb.name}} 
+                    <select name="effect">
+                        <option value=""></option>
+                        <option value="1">police</option>
+                        <option value="2">lala</option>
+                        <option value="3">nijaamordoido</option>
+                    </select>
 
+                </h1>
+                <div class="morergb">
+                <input type="color" name="color">
 
+                <input name="range" type="range" min="0" max="100" step="1" value="0" list="brilhorange">
+
+                <datalist id="brilhorange">
+                    <option value="0" label="0%">
+                    <option value="10">
+                    <option value="20">
+                    <option value="30">
+                    <option value="40">
+                    <option value="50" label="50%">
+                    <option value="60">
+                    <option value="70">
+                    <option value="80">
+                    <option value="90">
+                    <option value="100" label="100%">
+                </datalist>
+
+                <input type="submit" value="Enviar">
+
+                </div>
+            </div>
+
+            {% for rgbkey, rgbvalue in rgb_power.items %}
+            {% if rgb.ip == rgbkey and rgbvalue == False %}
+
+            <div class="contain-button" id="{{rgb.type}}{{rgb.id}}"
+                onclick="switchButton.on('{{rgb.type}}{{rgb.id}}'); document.forms['rgb{{rgb.ip}}'].submit()">
+                <input type="hidden" name="ip" value="{{rgb.ip}}">
+                <input type="hidden" name="action" value="ON">
+                <div class="ball"></div>
+            </div>
+
+            {% elif rgb.ip == rgbkey and rgbvalue == True %}
+            <div class="contain-button powerOn" id="{{rgb.type}}{{rgb.id}}"
+                onclick="switchButton.off('{{rgb.type}}{{rgb.id}}'); document.forms['rgb{{rgb.ip}}'].submit()"
+                style="justify-content: flex-end;">
+                <input type="hidden" name="ip" value="{{rgb.ip}}">
+                <input type="hidden" name="action" value="OFF">
+                <div class="ball"></div>
+            </div>
+
+            {% elif rgb.ip == rgbkey and not rgbvalue %}
+            <div class="contain-button">
+                <div class="ball"></div>
+            </div>
+
+            {% endif %}
             {% endfor %}
+
         </div>
-    {% endif %}
+    </form>
+    {% endfor %}
+
+</div>
+{% endif %}
+
 
 {% endblock %}

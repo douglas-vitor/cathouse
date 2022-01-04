@@ -79,9 +79,9 @@ body {
  height: 85%;
 }
 
-.sub-container-2columns {
+#sub-container-2columns {
  display: grid;
- height: 85%;
+ height: auto;
  grid-template-columns: 1fr 1fr;
 }
 
