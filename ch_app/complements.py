@@ -273,3 +273,49 @@ def statusRGB():
     
     return rgbs_status
 
+def powerRgb(action=None, ip=None):
+    if action == "ON":
+        action = True
+    elif action == "OFF":
+        action = False
+    else:
+        pass
+    
+    try:
+        req = requests.post("http://" + ip + "/json", json={"on": action}, timeout=2)
+    except:
+        pass
+    
+    return
+
+def moreRgb(ip=None, effect=None, color=None, range=None):
+    colorForDb = color.lstrip("#")
+    color = color.lstrip("#")
+    color = '{}'.format(list(int(color[i:i+2], 16) for i in (0, 2, 4)) )
+    color = list(color.split(","))
+    p1 = int(color[0].strip('['))
+    p2 = int(color[1])
+    p3 = int(color[2].strip(']'))
+
+    data = {
+        "bri": int(int(range) * 2.55),
+        'seg': [{
+            "col": [[p1, p2, p3]],
+            "fx": effect
+        }]
+    }
+
+    try:
+        req = requests.post("http://" + ip + "/json", json=data, timeout=2)
+        result = json.loads(req.content.decode('utf-8'))["success"]
+    except:
+        pass
+
+    if result and result == True:
+        if len(models.Rgb_temp.objects.filter(ip=ip)) < 1:
+            models.Rgb_temp.objects.create(type="RGB", ip=ip, color=colorForDb, effect=effect, bri=range)
+        if len(models.Rgb_temp.objects.filter(ip=ip)) == 1:
+            models.Rgb_temp.objects.filter(ip=ip, type="RGB").update(color=colorForDb, effect=effect, bri=range)
+
+    return
+

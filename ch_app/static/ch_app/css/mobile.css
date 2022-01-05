@@ -97,4 +97,25 @@
   width: initial;
   padding: 10px;
  }
+
+
+ /* RGB */
+.info .morergb input[type="range"] {
+    min-width: 6.5em;
+    max-width: 9em;
+}
+.info select {
+    width: 11.5em;
+    margin-left: 0;
+}
+.info .morergb input[type="submit"] {
+    width: 7.5em;
+    margin-left: 50%;
+    background-color: #87CEFA;
+    color: #ffffff;
+    font-weight: bold;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+}
+
 }

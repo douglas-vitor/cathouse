@@ -17,6 +17,8 @@ from .complements import dellAlarm
 from .complements import powerDimmer
 from .complements import statusPercentDimmer
 from .complements import statusRGB
+from .complements import powerRgb
+from .complements import moreRgb
 
 
 logger = logging.getLogger(__file__)
@@ -171,10 +173,36 @@ def dimmer(req):
 
 def rgb(req):
 	if req.user.is_authenticated:
+		if req.POST:
+			if req.POST['flag'] == "more":
+				moreRgb(ip=req.POST['ip'], effect=req.POST['effect'], color=req.POST['color'], range=req.POST['range'])
+			elif req.POST['flag'] == "power":
+				powerRgb(action=req.POST['action'], ip=req.POST['ip'])
+			else:
+				pass
+
 		rgbs = models.R_wifi.objects.filter(type2='RGB')
 		rgbs_power = statusRGB()
+
+		color = {}
+		effect = {}
+		bri = {}
+		for item in models.R_wifi.objects.filter(type2='RGB'):
+			for i in models.Rgb_temp.objects.filter(type="RGB"):
+				if i.ip == item.ip:
+					color[item.ip] = i.color
+					effect[item.ip] = i.effect
+					bri[item.ip] = i.bri
+
+		#print(data['Luz sala']['ip'])
+		#print(bri)
+
 		
-		return render(req, 'rgb.html', {'rgbs': rgbs, 'rgb_power': rgbs_power})
+		return render(req, 'rgb.html', {'rgbs': rgbs, 
+										'rgb_power': rgbs_power,
+										'color': color,
+										'effect': effect,
+										'bri': bri})
 	else:
 		return HttpResponseRedirect("/login")
 

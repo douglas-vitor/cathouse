@@ -38,3 +38,13 @@ class Timer(models.Model):
 	def __str__(self):
 		timer_name = self.ip + " - " + self.time + " - " + self.name_for_user
 		return (timer_name)
+
+class Rgb_temp(models.Model):
+	type = models.CharField(max_length=3, default="RGB")
+	ip = models.CharField(max_length=15)
+	color = models.CharField(max_length=20)
+	effect = models.IntegerField(default=0)
+	bri = models.IntegerField(default=100)
+
+	def __str__(self):
+                return (self.ip)
