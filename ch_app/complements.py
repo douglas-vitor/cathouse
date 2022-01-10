@@ -297,6 +297,15 @@ def moreRgb(ip=None, effect=None, color=None, range=None):
     p2 = int(color[1])
     p3 = int(color[2].strip(']'))
 
+    if effect == None:
+        effect = 0
+    if color == None:
+        p1 = 100 
+        p2 = 149 
+        p3 = 237
+    if range == None:
+        range = 100
+    
     data = {
         "bri": int(int(range) * 2.55),
         'seg': [{

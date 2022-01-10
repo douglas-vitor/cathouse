@@ -196,7 +196,6 @@ def rgb(req):
 
 		#print(data['Luz sala']['ip'])
 		#print(bri)
-
 		
 		return render(req, 'rgb.html', {'rgbs': rgbs, 
 										'rgb_power': rgbs_power,
