@@ -11,40 +11,80 @@ Funções de complemento para as views
 """
 
 def powerReles(action=None, ip=None):
-    if action == 'ON' and len(action) == 2:
-        try:
-            if len(ip) <= 15 and len(ip) >= 7:
-                requests.get("http://" + ip + "/cm?cmnd=Power%20On", timeout=2)
-        except:
-            return
-    elif action == 'OFF' and len(action) == 3:
-        try:
-            if len(ip) <= 15 and len(ip) >= 7:
-                requests.get("http://" + ip + "/cm?cmnd=Power%20Off", timeout=2)
-        except:
-            return
-    else:
-        return
+    for t in models.R_wifi.objects.filter(type="LUZ"):
+        if str(t.type2) == 'RGB':
+            if action == 'ON' and len(action) == 2:
+                action = True
+                try:
+                    if len(ip) <= 15 and len(ip) >= 7:
+                        req = requests.post("http://" + ip + "/json", json={"on": action}, timeout=2)
+                except:
+                    return
+            elif action == 'OFF' and len(action) == 3:
+                action = False
+                try:
+                    if len(ip) <= 15 and len(ip) >= 7:
+                        req = requests.post("http://" + ip + "/json", json={"on": action}, timeout=2)
+                except:
+                    return
+            else:
+                return
+        else:
+            if action == 'ON' and len(action) == 2:
+                try:
+                    if len(ip) <= 15 and len(ip) >= 7:
+                        requests.get("http://" + ip + "/cm?cmnd=Power%20On", timeout=2)
+                except:
+                    return
+            elif action == 'OFF' and len(action) == 3:
+                try:
+                    if len(ip) <= 15 and len(ip) >= 7:
+                        requests.get("http://" + ip + "/cm?cmnd=Power%20Off", timeout=2)
+                except:
+                    return
+            else:
+                return
 
 def allLights(action=None):
     if action == 'START' and len(action) == 5:
         for rAll in models.R_wifi.objects.filter(type="LUZ"):
-            try:
-                requests.get("http://" + rAll.ip + "/cm?cmnd=Power%20On", timeout=2)
-            except:
-                pass
+            if str(rAll.type2) == "RGB":
+                try:
+                    requests.post("http://" + rAll.ip + "/json", json={"on": True}, timeout=2)
+                except:
+                    pass
+            else:
+                try:
+                    requests.get("http://" + rAll.ip + "/cm?cmnd=Power%20On", timeout=2)
+                except:
+                    pass
     return
 
 def statusReles(type):
     statustrava = {}
     if len(type) <= 6:
         for t in models.R_wifi.objects.filter(type=type):
-            try:
-                checkStatusTrava = requests.get("http://" + t.ip + "/cm?cmnd=Power", timeout=2)
-                decodeTrava = json.loads(checkStatusTrava.content.decode('utf-8'))['POWER']
-                statustrava[t.ip] = decodeTrava
-            except:
+            if str(t.type2) == '0':
+                try:
+                    checkStatusTrava = requests.get("http://" + t.ip + "/cm?cmnd=Power", timeout=2)
+                    decodeTrava = json.loads(checkStatusTrava.content.decode('utf-8'))['POWER']
+                    statustrava[t.ip] = decodeTrava
+                except:
+                    pass
+            elif t.type2 == "RGB":
+                try:
+                    checkRgb = requests.get("http://" + t.ip + "/json/state", timeout=2)
+                    decodeRgb = json.loads(checkRgb.content.decode('utf-8'))["on"]
+                    if decodeRgb == True:
+                        decodeRgb = "ON"
+                    if decodeRgb == False:
+                        decodeRgb = "OFF"
+                    statustrava[t.ip] = decodeRgb
+                except:
+                    pass
+            else:
                 pass
+
     return statustrava
 
 def showTemp():
