@@ -40,7 +40,7 @@
               <div class="item">
                 <input type="hidden" id="ip" name="ip" value="{{luz.ip}}">
                 <div class="info">
-                  <h1>{{luz.name}}</h1>
+                  <h1>{{luz.name | slice:"0:18"}}</h1>
                   <h5>
                     {% if luz.type == 'LUZ' %}
                       Lâmpada
@@ -112,7 +112,7 @@
               <div class="item">
                 <input type="hidden" id="ip" name="ip" value="{{trava.ip}}">
                 <div class="info">
-                  <h1>{{trava.name}}</h1>
+                  <h1>{{trava.name | slice:"0:18"}}</h1>
                   <h5>
                     {% if trava.type == 'TRAVA' %}
                       Trava

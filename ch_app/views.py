@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from ch_app import models
 
-import requests
-import json
 from django.http import HttpResponseRedirect
 import logging
 from .complements import powerReles
